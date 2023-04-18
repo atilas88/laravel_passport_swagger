@@ -118,24 +118,323 @@
                     }
                 }
             }
+        },
+        "/api/users": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show user list",
+                "description": "Display a listing of the resource.",
+                "operationId": "c457726701591d1183b53aa71fc13441",
+                "responses": {
+                    "200": {
+                        "description": "Show all tasks"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/users/{id}": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show user info",
+                "description": "Display the specified resource.",
+                "operationId": "36a33ff774d5cba33c039dec2c3e0287",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "Parameter to search the user",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "Enter a user id ",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Show user info"
+                    },
+                    "404": {
+                        "description": "The user has not been found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "put": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Update user",
+                "description": "Update the specified resource in storage.",
+                "operationId": "b9091397c8b25f12c6adb74be6ce3a5a",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "Enter a user id",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "": {
+                                        "properties": {
+                                            "name": {
+                                                "type": "string"
+                                            },
+                                            "last_name": {
+                                                "type": "string"
+                                            },
+                                            "sex": {
+                                                "type": "string"
+                                            },
+                                            "age": {
+                                                "type": "integer"
+                                            },
+                                            "email": {
+                                                "type": "string"
+                                            },
+                                            "password": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "type": "object"
+                                    }
+                                },
+                                "type": "object",
+                                "example": {
+                                    "name": "Glendis",
+                                    "last_name": "Fournier Aguilera",
+                                    "sex": "femenino",
+                                    "age": "28",
+                                    "email": "gfa@gmail.com",
+                                    "password": 1234567
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "User authenticate"
+                    },
+                    "401": {
+                        "description": "User Unauthorized"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            },
+            "delete": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Delete a user",
+                "description": "Remove the specified resource from storage.",
+                "operationId": "fa56cffde745d3f152f95cbacd936c0b",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "examples": {
+                            "int": {
+                                "summary": "Enter a user id",
+                                "value": "1"
+                            }
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "User delete successfully"
+                    },
+                    "404": {
+                        "description": "The user has been not found"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/details/ageavg": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show user age average",
+                "operationId": "97b7a41e8654a1bef77b5ca522a87af4",
+                "responses": {
+                    "200": {
+                        "description": "Show user age average"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/details/countbysex": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show users count by sex",
+                "operationId": "9b8a1480934ed3784f64188623f8f026",
+                "responses": {
+                    "200": {
+                        "description": "Show users count by sex"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/details/oldestuser": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show oldest user",
+                "operationId": "0c27be4cc7ea626a4e6cd50c882f0796",
+                "responses": {
+                    "200": {
+                        "description": "Show oldest user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
+        },
+        "/api/details/younger": {
+            "get": {
+                "tags": [
+                    "Users"
+                ],
+                "summary": "Show younger user",
+                "operationId": "ee0f79b4682cca7be96cdd6712b2e16b",
+                "responses": {
+                    "200": {
+                        "description": "Show younger user"
+                    },
+                    "401": {
+                        "description": "Unauthorized"
+                    },
+                    "default": {
+                        "description": "An error occurred"
+                    }
+                },
+                "security": [
+                    {
+                        "passport": []
+                    }
+                ]
+            }
         }
     },
-    "security": [
-        {
+    "components": {
+        "securitySchemes": {
             "passport": {
                 "type": "oauth2",
                 "description": "Laravel passport oauth2 security.",
                 "in": "header",
                 "scheme": "https",
                 "flows": {
-                    "password": {
-                        "authorizationUrl": "http://localhost/oauth/authorize",
-                        "tokenUrl": "http://localhost/oauth/token",
-                        "refreshUrl": "http://localhost/token/refresh",
+                    "clientCredentials": {
+                        "tokenUrl": "/oauth/token",
+                        "refreshUrl": "/token/refresh",
                         "scopes": []
                     }
                 }
             }
         }
-    ]
+    }
 }
