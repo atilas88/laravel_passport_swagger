@@ -3,14 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Repository\UserRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Database\Query\Builder;
 class UserController extends Controller
 {
-
-    public function __construct()
+    private $userRepository;
+    public function __construct(UserRepository $userRepository)
     {
+        $this->userRepository = $userRepository;
         $this->middleware('client');
     }
 
@@ -39,7 +41,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = $this->userRepository->all();
         return response()->json([
             'tasks' => $users
         ],200);
@@ -80,9 +82,9 @@ class UserController extends Controller
      *    )
      * )
      */
-    public function show($id)
+    public function show(int $id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->get($id);
         if(is_null($user))
         {
             return response()->json([
@@ -174,7 +176,7 @@ class UserController extends Controller
      * )
      *
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, int $id)
     {
         $validateData = Validator::make($request->all(),[
             'name' => 'required',
@@ -188,7 +190,7 @@ class UserController extends Controller
         if ($validateData->fails()) {
             return response()->json(['error' => $validateData->errors()], 401);
         }
-        $user = User::find($id);
+        $user = $this->userRepository->get($id);
         if(is_null($user))
         {
             return response()->json([
@@ -238,9 +240,9 @@ class UserController extends Controller
      *    )
      * )
      */
-    public function destroy($id)
+    public function destroy(int $id)
     {
-        $user = User::find($id);
+        $user = $this->userRepository->get($id);
         if(is_null($user))
         {
             return response()->json([
@@ -249,7 +251,8 @@ class UserController extends Controller
         }
         else
         {
-            $user->delete();
+
+            $this->userRepository->delete($user);
             return response()->json([
                 'message' => 'User deleted successfully',
             ]);
@@ -280,8 +283,7 @@ class UserController extends Controller
      */
     public function ageAvg()
     {
-        $usersAge = User::all()->average('age');
-
+        $usersAge = $this->userRepository->ageAvg();
         if($usersAge > 0)
         {
             return response()->json([
@@ -322,13 +324,11 @@ class UserController extends Controller
      */
     public function countBySex()
     {
-        $female = User::where('sex','femenino')->count();
-        $male = User::where('sex','masculino')->count();
-
+        $countBySex = $this->userRepository->countBySex();
         return response()->json([
             'message' => 'Count users by sex',
-            'female' => $female,
-            'male' => $male
+            'female' => $countBySex['female'],
+            'male' => $countBySex['male']
         ],200);
     }
 
@@ -356,11 +356,7 @@ class UserController extends Controller
      */
     public function maxAgeUser()
     {
-        /*$maxUserAge = User::all()->max('age');
-        $oldest = User::where('age',$maxUserAge)->get();*/
-        $oldest = User::where('age',function (Builder $query) {
-            $query->selectRaw('max(u.age)')->from('users as u');
-        })->get();
+        $oldest = $this->userRepository->maxAgeUser();
         return response()->json([
             'message' => 'Oldest user',
             'Oldest' => $oldest,
@@ -391,9 +387,7 @@ class UserController extends Controller
      */
     public function minAgeUser()
     {
-        $younger = User::where('age',function (Builder $query) {
-            $query->selectRaw('min(u.age)')->from('users as u');
-        })->get();
+        $younger = $this->userRepository->minAgeUser();
         return response()->json([
             'message' => 'Younger user',
             'Younger' => $younger,
